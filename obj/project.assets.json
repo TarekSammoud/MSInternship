@@ -3552,11 +3552,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Tarek\\Desktop\\Stage MS\\MSInternship\\MSS.API\\MSS.API.csproj",
+      "projectUniqueName": "C:\\Users\\Tarek\\Desktop\\Stage MS\\MSInternship-BACKEND\\MSS.API.csproj",
       "projectName": "MSS.API",
-      "projectPath": "C:\\Users\\Tarek\\Desktop\\Stage MS\\MSInternship\\MSS.API\\MSS.API.csproj",
+      "projectPath": "C:\\Users\\Tarek\\Desktop\\Stage MS\\MSInternship-BACKEND\\MSS.API.csproj",
       "packagesPath": "C:\\Users\\Tarek\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Tarek\\Desktop\\Stage MS\\MSInternship\\MSS.API\\obj\\",
+      "outputPath": "C:\\Users\\Tarek\\Desktop\\Stage MS\\MSInternship-BACKEND\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Tarek\\AppData\\Roaming\\NuGet\\NuGet.Config",

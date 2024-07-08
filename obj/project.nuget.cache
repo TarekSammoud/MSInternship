@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "VfSuYQnJFY0=",
+  "dgSpecHash": "GSmt+USGE/k=",
   "success": true,
-  "projectFilePath": "C:\\Users\\Tarek\\Desktop\\Stage MS\\MSInternship\\MSS.API\\MSS.API.csproj",
+  "projectFilePath": "C:\\Users\\Tarek\\Desktop\\Stage MS\\MSInternship-BACKEND\\MSS.API.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Tarek\\.nuget\\packages\\azure.core\\1.25.0\\azure.core.1.25.0.nupkg.sha512",
     "C:\\Users\\Tarek\\.nuget\\packages\\azure.identity\\1.7.0\\azure.identity.1.7.0.nupkg.sha512",

@@ -14,8 +14,8 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<MssolutionsContext>(options =>
 {
-        options.UseSqlServer("server = DESKTOP-TM9KI0C;database=MSSolutions; trusted_connection = true;TrustServerCertificate=true");
-        string? x = builder.Configuration.GetConnectionString("DefaultConnection");
+        options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+      //  string? x = builder.Configuration.GetConnectionString("DefaultConnection");
     }
 );
 
