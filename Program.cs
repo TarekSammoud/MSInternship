@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Hosting.Server;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MSS.API.Data;
+using MSS.API.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +13,25 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddIdentityCore<User>(options =>
+{
+    options.Password.RequiredLength = 8;
+    options.Password.RequireDigit = false;
+    options.Password.RequireLowercase = false;
+    options.Password.RequireUppercase = false;
+    options.Password.RequireLowercase = false;
+    options.Password.RequireNonAlphanumeric = false;
+
+    options.SignIn.RequireConfirmedEmail = true;
+
+})
+    .AddRoles<IdentityRole>()
+    .AddRoleManager<RoleManager<IdentityRole>>()
+    .AddEntityFrameworkStores<MssolutionsContext>()
+    .AddSignInManager<SignInManager<User>>()
+    .AddUserManager<UserManager<User>>()
+    .AddDefaultTokenProviders();
+
 
 builder.Services.AddDbContext<MssolutionsContext>(options =>
 {

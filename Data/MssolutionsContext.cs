@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using MSS.API.Models;
 
 namespace MSS.API.Data;
 
-public partial class MssolutionsContext : DbContext
+public partial class MssolutionsContext : IdentityDbContext<User>
 {
     public MssolutionsContext()
     {
@@ -73,9 +75,9 @@ public partial class MssolutionsContext : DbContext
 
         modelBuilder.Entity<User>(entity =>
         {
+            entity.ToTable("user");
             entity.HasKey(e => e.NumTel);
 
-            entity.ToTable("user");
 
             entity.Property(e => e.NumTel)
                 .HasMaxLength(8)
@@ -119,10 +121,7 @@ public partial class MssolutionsContext : DbContext
             entity.Property(e => e.Password)
                 .IsUnicode(false)
                 .HasColumnName("password");
-            entity.Property(e => e.Roles)
-                .HasMaxLength(50)
-                .IsUnicode(false)
-                .HasDefaultValueSql("('client')");
+          
             entity.Property(e => e.UpdatedAt)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime")
@@ -132,6 +131,30 @@ public partial class MssolutionsContext : DbContext
                 .IsFixedLength()
                 .HasColumnName("walletId");
         });
+
+
+        modelBuilder.Entity<IdentityUserLogin<string>>(entity =>
+        {
+            entity.HasKey(e => new { e.LoginProvider, e.ProviderKey });
+            entity.ToTable("AspNetUserLogins"); // Replace with your table name if needed
+        });
+
+
+
+        // Configure IdentityUserRole
+        modelBuilder.Entity<IdentityUserRole<string>>(entity =>
+        {
+            entity.HasKey(ur => new { ur.UserId, ur.RoleId });
+            entity.ToTable("AspNetUserRoles"); // Replace with your table name if needed
+        });
+
+
+        modelBuilder.Entity<IdentityUserToken<string>>(entity =>
+        {
+            entity.HasKey(ut => new { ut.UserId, ut.LoginProvider, ut.Name });
+            entity.ToTable("AspNetUserTokens"); // Replace with your table name if needed
+        });
+
 
         modelBuilder.Entity<Wallet>(entity =>
         {
