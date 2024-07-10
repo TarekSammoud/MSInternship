@@ -1,8 +1,12 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Hosting.Server;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using MSS.API.Data;
 using MSS.API.Models;
+using MSS.API.Services;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +17,24 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddDbContext<MssolutionsContext>(options =>
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+    //  string? x = builder.Configuration.GetConnectionString("DefaultConnection");
+}
+);
+
+builder.Services.AddScoped<JWTService>();
+
+builder.Services.AddCors(options => options.AddPolicy(name: "UserOrigins",
+    policy =>
+    {
+        policy.WithOrigins("http://localhost:4200").AllowAnyMethod().AllowAnyHeader();
+    }
+    ));
+
+
 builder.Services.AddIdentityCore<User>(options =>
 {
     options.Password.RequiredLength = 8;
@@ -33,19 +55,21 @@ builder.Services.AddIdentityCore<User>(options =>
     .AddDefaultTokenProviders();
 
 
-builder.Services.AddDbContext<MssolutionsContext>(options =>
-{
-        options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
-      //  string? x = builder.Configuration.GetConnectionString("DefaultConnection");
-    }
-);
 
-builder.Services.AddCors(options => options.AddPolicy(name: "UserOrigins",
-    policy=>
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
     {
-        policy.WithOrigins("http://localhost:4200").AllowAnyMethod().AllowAnyHeader();
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Key"])),
+            ValidIssuer = builder.Configuration["JWT:Issuer"],
+            ValidateAudience = false
+        };
     }
-    ));
+    
+    );
 
 var app = builder.Build();
 
@@ -60,6 +84,7 @@ app.UseCors("UserOrigins");
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

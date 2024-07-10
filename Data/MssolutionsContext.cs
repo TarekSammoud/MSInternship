@@ -46,10 +46,7 @@ public partial class MssolutionsContext : IdentityDbContext<User>
                 .IsUnicode(false)
                 .HasColumnName("bankName");
             entity.Property(e => e.NbUsers).HasColumnName("nbUsers");
-            entity.Property(e => e.NumTel)
-                .HasMaxLength(8)
-                .IsFixedLength()
-                .HasColumnName("numTel");
+        
         });
 
         modelBuilder.Entity<Transaction>(entity =>
@@ -75,14 +72,7 @@ public partial class MssolutionsContext : IdentityDbContext<User>
 
         modelBuilder.Entity<User>(entity =>
         {
-            entity.ToTable("user");
-            entity.HasKey(e => e.NumTel);
-
-
-            entity.Property(e => e.NumTel)
-                .HasMaxLength(8)
-                .IsFixedLength()
-                .HasColumnName("numTel");
+      
             entity.Property(e => e.Address)
                 .HasMaxLength(255)
                 .IsUnicode(false)
@@ -118,9 +108,7 @@ public partial class MssolutionsContext : IdentityDbContext<User>
                 .HasMaxLength(50)
                 .IsUnicode(false)
                 .HasColumnName("mf");
-            entity.Property(e => e.Password)
-                .IsUnicode(false)
-                .HasColumnName("password");
+           
           
             entity.Property(e => e.UpdatedAt)
                 .HasDefaultValueSql("(getdate())")

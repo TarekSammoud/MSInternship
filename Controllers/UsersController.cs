@@ -18,7 +18,7 @@ namespace MSS.API.Controllers
             ctx = MSCC;
             config = conf;
         }
-
+/*
         [HttpGet("GetUsers")]
         public async Task<ActionResult<List<User>>> GetUsers()
         {
@@ -80,7 +80,7 @@ namespace MSS.API.Controllers
             catch (Exception ex) { 
                 Console.WriteLine(ex.ToString());
             }
-            */
+            
 
             ctx.Users.Add(us);
             try
@@ -152,7 +152,7 @@ namespace MSS.API.Controllers
 
             return NoContent();
         }
-
+*/
 
     }
 }

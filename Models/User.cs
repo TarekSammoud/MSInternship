@@ -7,8 +7,6 @@ namespace MSS.API.Models
     public class User : IdentityUser
     {
 
-        [Key]
-        public string NumTel { get; set; } = null!;
 
         public string FirstName { get; set; } = null!;
 
@@ -30,7 +28,6 @@ namespace MSS.API.Models
 
         public DateTime UpdatedAt { get; set; } = DateTime.Now;
 
-        public string Password { get; set; } = null!;
 
     }
 }
