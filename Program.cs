@@ -27,12 +27,7 @@ builder.Services.AddDbContext<MssolutionsContext>(options =>
 
 builder.Services.AddScoped<JWTService>();
 
-builder.Services.AddCors(options => options.AddPolicy(name: "UserOrigins",
-    policy =>
-    {
-        policy.WithOrigins("http://localhost:4200").AllowAnyMethod().AllowAnyHeader();
-    }
-    ));
+builder.Services.AddCors();
 
 
 builder.Services.AddIdentityCore<User>(options =>
@@ -72,6 +67,11 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     );
 
 var app = builder.Build();
+app.UseCors(opt =>
+{
+    opt.AllowAnyHeader().AllowAnyMethod().AllowCredentials().WithOrigins(builder.Configuration["JWT:ClientUrl"]);
+});
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -80,7 +80,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseCors("UserOrigins"); 
 
 app.UseHttpsRedirection();
 

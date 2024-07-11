@@ -17,7 +17,7 @@ namespace MSS.API.DTO.Account
         [StringLength(15, MinimumLength = 2, ErrorMessage = "Last Name must be at least {2}, and at maximum {1} characters  ")]
         public String lastName { get; set; }
         [Required]
-        [RegularExpression("^\\w+@[a-zA-Z_]+?\\.[a-zA-Z]{2,3}$", ErrorMessage = "Invalid email address")]
+        [RegularExpression("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$", ErrorMessage = "Invalid email address")]
         public string email { get; set; }
 
         [Required]
