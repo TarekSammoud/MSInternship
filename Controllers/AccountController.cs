@@ -34,7 +34,7 @@ namespace MSS.API.Controllers
         {
             var user = await _userManager.FindByNameAsync(model.UserName);
             if (user == null) { 
-                return Unauthorized("Invalid username or password");
+                return Unauthorized("Invalid e-mail or password");
             }
 
 
@@ -43,7 +43,7 @@ namespace MSS.API.Controllers
 
             if (!result.Succeeded)
             { 
-                return Unauthorized("Invalid username or password");
+                return Unauthorized("Invalid e-mail or password");
             }
 
             if (user.EmailConfirmed == false)
@@ -76,14 +76,14 @@ namespace MSS.API.Controllers
                 EmailConfirmed = true
             };
 
-            var result = await _userManager.CreateAsync(userToAdd,model.password);
+            var result = await _userManager.CreateAsync(userToAdd, model.password);
 
             if (!result.Succeeded)
             {
                 return BadRequest(result.Errors);
             }
 
-            return Ok("Your account has been created.");
+            return Ok(new JsonResult(new { title = "Account Created" , message = "Your account has been created"}));
 
         }
 
@@ -96,9 +96,29 @@ namespace MSS.API.Controllers
         [HttpGet("refresh-user-token")]
         public async Task<ActionResult<UserDto>> RefreshUserToken()
         {
-            var user = await _userManager.FindByNameAsync(User.FindFirst(ClaimTypes.Name)?.Value);
-            return CreateApplicationUserDto(user);
+            // Retrieve the username from the current user's claims
+            var userName = User.FindFirst(ClaimTypes.Email)?.Value;
+
+            if (string.IsNullOrEmpty(userName))
+            {
+                return BadRequest("Username claim not found or empty.");
+            }
+
+            var user = await _userManager.FindByNameAsync(userName);
+
+            if (user == null)
+            {
+                // Handle the case where user is not found
+                // You might return NotFound or handle it based on your application's requirements.
+                return NotFound($"User with username '{userName}' not found.");
+            }
+
+            // Convert the user to UserDto
+            var userDto = CreateApplicationUserDto(user);
+
+            return userDto;
         }
+
 
         #region Private Helper Methods 
         private UserDto CreateApplicationUserDto(User user)
